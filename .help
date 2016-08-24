@@ -1,5 +1,3 @@
-source ./setup/bashcolors.sh
-
 # Print help text
 function helpText (){
 
