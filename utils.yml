@@ -1,0 +1,18 @@
+# Global configuration values
+
+repos:
+  base_path: "./repos"
+  whitelist: "./setup/modulewhitelist.txt"
+
+cartridge:
+  base_path: "./dw_ba_core"
+  build_env: "development"
+  core_dirs:
+    - ./dw_ba_core/
+    - ./dw_ba_core/cartridge
+    - ./dw_ba_core/sites/site_template
+    - ./dw_ba_core/tools
+  copy_paths:
+    - "repos/**/sites"
+    - "repos/**/tools"
+    - "repos/**/cartridges/**/cartridge"

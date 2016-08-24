@@ -1,0 +1,40 @@
+source ./setup/bashcolors.sh
+
+# Print help text
+function helpText (){
+
+  if [ ! -z $1 ]; then
+    echoColorText   "Command '$1' not recognized" 'ERROR: ' $YELLOW;
+  fi
+
+  cat <<-EOF
+
+  Initialization script for dw_ba_core cartridge
+
+  Usage: ./init [command, [subcommand]] [flags]
+
+  Commands:
+
+    module                     For mangaing modules. Without any arguements, it just lists the modules currently in the repo.
+
+    module add [url] [flags]
+
+    setup                      Clears repo of unwanted files, checks out latest submodule version,
+                               merges all cartridges and metadata, then zips metadata. This is the main command
+                               needed to create the final dw_ba_core module.
+
+    setup dev                  Resets the cartridge, and rebuilds it with all the available modules.
+
+    setup production           Resets the cartridge, and rebuilds it with whitelisted modules.
+
+    update                     Updates all submodules registered and located in ./modules
+
+    copy                       Merges the meta, cartridge, and tools data in /modules/* into /dw_ba_core/cartridge.
+                               This builds the bundled DWRE cartridge
+
+    zipmeta                    Merges all the metadata located in all modules into /dw_ba_core/sites and zips it up into an importable file
+
+    reset                      Resets the module to its original state (for development & testing purposes)
+
+EOF
+}
