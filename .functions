@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# Generic separator, to make bash output more dilimited
-function separator (){
-  echoColorText $( printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' - ) $GRAY
-}
