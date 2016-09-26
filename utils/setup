@@ -1,0 +1,31 @@
+#! /usr/bin/env bash
+
+gatherInfo (){
+
+  echoColorText "Gathering Local Env Config" " - " $YELLOW;
+  echo
+
+  read -p $CYAN"Local Base Path? "$NOCOLOR localBasePath
+
+  read -p $CYAN"Local Database Name?     "$NOCOLOR localDbName
+  read -p $CYAN"Local Database User?     "$NOCOLOR localDbUser
+  read -p $CYAN"Local Database Password? "$NOCOLOR localDbPass
+
+}
+
+
+buildGitignore (){
+
+}
+
+
+initSetup(){
+
+  echo
+  taskMsg "Starting Setup"
+  separator
+
+  gatherInfo
+
+  buildGitignore
+}
