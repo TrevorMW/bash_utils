@@ -9,6 +9,7 @@ gatherInfo (){
   declare -a envs=('local' 'staging' 'production')
   local newConfig="$BasePath/utils/config.yml"
 
+<<<<<<< HEAD
   if [ ! -f $newConfig ]; then
 
     cp "$BasePath/utils/config.yml.sample" $newConfig
@@ -52,6 +53,40 @@ gatherInfo (){
     echo
     echo
   fi;
+=======
+  cp "$BasePath/utils/config.yml.sample" $newConfig
+
+  for env in ${envs[@]}; do
+
+    echoColorText "Gathering config for the $CYAN\"$env\"$YELLOW environment..." "" $YELLOW;
+
+    read -p $CYAN" - $env Base Path? "$NOCOLOR          BasePath
+    read -p $CYAN" - $env Database Name? "$NOCOLOR      DbName
+    read -p $CYAN" - $env Database User? "$NOCOLOR      DbUser
+    read -p $CYAN" - $env Database Password? "$NOCOLOR  DbPass
+
+    read -p $CYAN" - $env SSH user? "$NOCOLOR           SshUser
+    read -p $CYAN" - $env SSH password? "$NOCOLOR       SshPass
+    read -p $CYAN" - $env SSH IP address? "$NOCOLOR     SshIp
+
+    echo
+    echoColorText "Populating config.yml with $CYAN${env}$YELLOW data" " - " $YELLOW
+    separator
+
+    bp="@${env}BasePath";
+    dbN="@${env}DbName";
+    dbU="@${env}DbUser"
+
+    local replaceString="s|$bp|${BasePath}|g;s|$dbN|${DbName}|g;s|$dbU|${DbUser}|g;s|@${env}DbPass|${DbPass}|g;s|@${env}SshUser|${SshUser}|g;s|@${env}SshPass|${SshPass}|g;s|@${env}SshIp|${SshIp}|g;"
+
+    sed_inplace $replaceString $newConfig
+
+    echo
+    echo
+  done;
+
+
+>>>>>>> 547d6bd4829ee0fa35ea2fa17183da735f067301
 }
 
 makeUtilsSymlink (){
@@ -61,6 +96,7 @@ makeUtilsSymlink (){
 }
 
 updateModules (){
+<<<<<<< HEAD
 
   taskMsg "Updating Node Modules"
   separator
@@ -71,6 +107,13 @@ updateModules (){
   else
     echoColorText 'Installing Node Modules' ' - ' $YELLOW
     echo
+=======
+  if [ -d "./node_modules" ]; then
+    echoColorText 'Updating Node Modules' 'INFO: ' $YELLOW
+    npm update
+  else
+    echoColorText 'Installing Node Modules' 'INFO: ' $YELLOW
+>>>>>>> 547d6bd4829ee0fa35ea2fa17183da735f067301
     npm install
   fi
 }
