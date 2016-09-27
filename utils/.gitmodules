@@ -1,0 +1,6 @@
+[submodule "ba-colorize-shell"]
+	path = ba-colorize-shell
+	url = git@github.com:BlueAcornInc/ba-colorize-shell.git
+[submodule "bin/utils/colors"]
+	path = bin/utils/colors
+	url = git@github.com:BlueAcornInc/ba-colorize-shell.git

@@ -1,0 +1,63 @@
+#! /usr/bin/env bash
+
+BasePath=$(git rev-parse --show-toplevel)
+
+. $BasePath/utils/tools/colors/bashcolors
+. $BasePath/utils/tools/help
+
+
+prompt_confirm() {
+  while true; do
+    read -r -n 1 -p $CYAN"${1:-Continue?} [y/n]: "$NOCOLOR REPLY
+    case $REPLY in
+      [yY]) echo ; return 0 ;;
+      [nN]) echo ; return 1 ;;
+      *) errorMsg "Invalid input"; prompt_confirm ;;
+    esac
+  done
+}
+
+# sed_inplace : in place file substitution
+############################################
+#
+# usage: sed_inplace "file" "sed substitution"
+#    ex: sed_inplace "/tmp/file" "s/CLIENT_CODE/BA/g"
+#
+
+sed_inplace(){
+  local SED_CMD="sed"
+
+  if [[ $OSTYPE == darwin* ]]; then
+    if $(type gsed >/dev/null 2>&1); then
+      local SED_CMD="gsed"
+    elif $(type /usr/local/bin/sed >/dev/null 2>&1); then
+      local SED_CMD="/usr/local/bin/sed"
+    else
+      sed -i '' -E "$2" "$1"
+      return
+    fi
+  fi
+
+  $SED_CMD -r -i "$2" "$1"
+}
+
+
+parseYaml() {
+   local prefix=$2
+   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+   sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+   awk -F$fs '{
+      indent = length($1)/2;
+      vname[indent] = $2;
+      for (i in vname) {if (i > indent) {delete vname[i]}}
+      if (length($3) > 0) {
+         vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+         printf("%s%s%s=\"%s\"\n", "'$prefix'",vn, $2, $3);
+      }
+   }'
+}
+
+if [ -d "$BasePath/utils/config.yml" ]; then
+  eval $( parseYaml $BasePath/utils/config.yml )
+fi;
