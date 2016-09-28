@@ -2,9 +2,8 @@
 
 BasePath=$(git rev-parse --show-toplevel)
 
-. $BasePath/utils/tools/colors/bashcolors
-. $BasePath/utils/tools/help
-
+. $BasePath/tools/bashcolors
+. $BasePath/tools/help
 
 prompt_confirm() {
   while true; do
@@ -58,6 +57,6 @@ parseYaml() {
    }'
 }
 
-if [ -d "$BasePath/utils/config.yml" ]; then
-  eval $( parseYaml $BasePath/utils/config.yml )
+if [ -d "$BasePath/config.yml" ]; then
+  eval $( parseYaml $BasePath/config.yml )
 fi;

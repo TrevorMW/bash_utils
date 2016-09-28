@@ -1,0 +1,38 @@
+# Global configuration values
+
+env:
+  local:
+    paths:
+      base: "@localBasePath"
+    db:
+      name: "@localDbName"
+      user: "@localDbUser"
+      pass: "@localDbPass"
+    ssh:
+      user: "@localSshUser"
+      ip:   "@localSshIp"
+      pass: "@localSshPass"
+
+  staging:
+    paths:
+      base: "/var/www/drivewithuber"
+    db:
+      name: "drivewithuber"
+      user: "uberdriver"
+      pass: "uberdriver"
+    ssh:
+      user: "root"
+      ip:   "120.55.62.130"
+      pass: "wagner1"
+
+  production:
+    paths:
+      base: "wrgtsrgfv"
+    db:
+      name: "eferr"
+      user: "scrg3ynt"
+      pass: "xvnig"
+    ssh:
+      user: "ieinie"
+      ip:   "126.50.324.9"
+      pass: "astbnb"
