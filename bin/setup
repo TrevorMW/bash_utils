@@ -1,17 +1,19 @@
 #! /usr/bin/env bash
 
 
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+type greadlink >/dev/null 2>&1 && CWD="$( dirname "$( greadlink -f "$0" )" )" || \
+  CWD="$( dirname "$( readlink -f "$0" )" )"
 
 . $CWD/tools/functions
 
 type git >/dev/null 2>&1 || errorMsg "Please install git before continuing..."
 
-utilsPath=$(git rev-parse --show-toplevel)
+basePath=$( git rev-parse --show-toplevel )
+utilsPath=$CWD
 
-echo $CWD
+echo $(pwd)
 echo $utilsPath
+echo $basePath
 
 gatherInfo (){
 
@@ -116,4 +118,4 @@ initSetup(){
 
 
 # Start script
-initSetup
+#initSetup
