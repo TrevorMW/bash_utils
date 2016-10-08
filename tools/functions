@@ -1,9 +1,10 @@
 #! /usr/bin/env bash
 
-BasePath=$(git rev-parse --show-toplevel)
+type greadlink >/dev/null 2>&1 && CWD="$( dirname "$( greadlink -f "$0" )" )" || \
+  CWD="$( dirname "$( readlink -f "$0" )" )"
 
-. $BasePath/tools/bashcolors
-. $BasePath/tools/help
+. $CWD/tools/bashcolors
+. $CWD/tools/help
 
 prompt_confirm() {
   while true; do
