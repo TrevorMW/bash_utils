@@ -53,7 +53,7 @@ linkBin(){
   echoColorText "Creating symlink to access $CYAN\"bash_utils\"$YELLOW bin folder." " - " $YELLOW
   separator
   echo
-  ln -s "$CWD/bash_utils/bin" "$CWD/bin"
+  ln -s "$CWD/bash_utils/bin" bin
 }
 
 downloadUtils(){
@@ -64,7 +64,7 @@ downloadUtils(){
 }
 
 attach(){
-  
+
   downloadUtils
   linkBin
 }
