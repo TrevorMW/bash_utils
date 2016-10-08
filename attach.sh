@@ -27,7 +27,7 @@ errorMsg (){
 type git >/dev/null 2>&1 || errorMsg "Please install git before continuing..."
 
 BasePath=$(git rev-parse --show-toplevel)
-Repo="git@github.com:TrevorMW/bash_utils.git"
+repo="git@github.com:TrevorMW/bash_utils.git"
 branch="master"
 
 linkBin(){
