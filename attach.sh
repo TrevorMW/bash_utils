@@ -47,8 +47,7 @@ type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
 repo="git@github.com:TrevorMW/bash_utils.git"
 branch="master"
 
-echoColorText "Attaching $YELLOW\"bash_utils\"$BLUE toolkit" "Task: " $BLUE
-separator
+
 
 linkBin(){
   echoColorText "Creating symlink to access $CYAN\"bash_utils\"$YELLOW bin folder." " - " $YELLOW
@@ -81,6 +80,10 @@ removeAttach(){
 }
 
 attach(){
+
+  echoColorText "Attaching $YELLOW\"bash_utils\"$BLUE toolkit" "Task: " $BLUE
+  separator
+
   downloadUtils
   linkBin
   removeExtraGit
