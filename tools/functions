@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-BasePath=$(pwd)
+BasePath="$(pwd)/bash_utils"
 
 . $BasePath/tools/bashcolors
 . $BasePath/tools/help
