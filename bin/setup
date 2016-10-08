@@ -8,16 +8,19 @@ type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
 
 type git >/dev/null 2>&1 || errorMsg "Please install git before continuing..."
 
-utilsPath="$CWD/bash_utils"
+utilsPath=$(git rev-parse --show-toplevel)
+
+echo $CWD
+echo $utilsPath
 
 gatherInfo (){
 
   declare -a envs=('local' 'staging' 'production')
-  local newConfig="$utilsPath/config.yml"
+  local newConfig="$BasePath/config.yml"
 
   if [ ! -f $newConfig ]; then
 
-    cp "$utilsPath/config.yml.sample" $newConfig
+    cp "$BasePath/config.yml.sample" $newConfig
 
     for env in ${envs[@]}; do
 
@@ -74,12 +77,18 @@ gatherInfo (){
   fi;
 }
 
+makeUtilsSymlink (){
+  if [ ! -h 'bin' ]; then
+    ln -s $BasePath/bash_utils/bin bin
+  fi;
+}
+
 updateModules (){
 
   taskMsg "Updating Node Modules"
   separator
 
-  if [ -d "$CWD/node_modules" ]; then
+  if [ -d "$BasePath/node_modules" ]; then
     echoColorText 'Updating Node Modules' ' - ' $YELLOW
     echo
     npm update
@@ -100,8 +109,11 @@ initSetup(){
 
   gatherInfo
 
-  updateModules
+  #makeUtilsSymlink
+
+  #updateModules
 }
+
 
 # Start script
 initSetup
