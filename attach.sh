@@ -68,11 +68,16 @@ removeExtraGit(){
   rm -rf "./bash_utils/.git"
 }
 
+removeAttach(){
+  rm "./attach.sh"
+}
+
 attach(){
 
   downloadUtils
   linkBin
   removeExtraGit
+  removeAttach
 }
 
 attach
