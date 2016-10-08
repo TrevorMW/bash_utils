@@ -56,7 +56,7 @@ downloadUtils(){
 }
 
 linkBin(){
-  
+
   echoColorText "Creating symlink to access $CYAN\"bash_utils\"$YELLOW bin folder." " - " $YELLOW
   separator
   ln -s ./bash_utils/bin bin
@@ -70,6 +70,8 @@ removeExtraGit(){
 
 removeAttach(){
   echoColorText "Removing attach.sh" " - " $YELLOW
+  separator
+  echo
   rm "./attach.sh"
 }
 

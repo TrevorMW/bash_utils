@@ -4,11 +4,13 @@
 type greadlink >/dev/null 2>&1 && CWD="$( dirname "$( greadlink -f "$0" )" )" || \
   CWD="$( dirname "$( readlink -f "$0" )" )"
 
-. $CWD/tools/functions
+themePath=$(pwd)
+
+. $themePath/tools/functions
 
 type git >/dev/null 2>&1 || errorMsg "Please install git before continuing..."
 
-themePath=$(pwd)
+
 basePath=$( git rev-parse --show-toplevel )
 utilsPath="$themePath/bash_utils"
 
