@@ -26,15 +26,25 @@ errorMsg (){
 
 type git >/dev/null 2>&1 || errorMsg "Please install git before continuing..."
 
+echoColorText "Attaching $YELLOW\"bash_utils\"$BLUE toolkit" "Task: " $BLUE
+
 BasePath=$(git rev-parse --show-toplevel)
 repo="git@github.com:TrevorMW/bash_utils.git"
 branch="master"
 
+echo $BasePath
+echo $repo
+echo $branch
+
 linkBin(){
+  echoColorText "Creating symlink to access $CYAN\"bash_utils\"$YELLOW bin folder." " - " $YELLOW
+  echo
   ln -s "$BasePath/bash_utils/bin" "$BasePath/bin"
 }
 
 downloadUtils(){
+  echoColorText "Cloning $CYAN\"bash_utils\"$YELLOW repository." " - " $YELLOW
+  echo
   git clone -b $branch $repo
 }
 
