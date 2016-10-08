@@ -51,11 +51,12 @@ branch="master"
 downloadUtils(){
   echoColorText "Cloning $CYAN\"bash_utils\"$YELLOW repository." " - " $YELLOW
   echo
-  separator
   git clone -b $branch $repo
+  separator
 }
 
 linkBin(){
+  
   echoColorText "Creating symlink to access $CYAN\"bash_utils\"$YELLOW bin folder." " - " $YELLOW
   separator
   ln -s ./bash_utils/bin bin
