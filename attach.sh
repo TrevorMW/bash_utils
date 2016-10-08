@@ -1,119 +1,49 @@
 #! /bin/sh
 
-#
-# adds devops-skel to -develop branch -- imports to the skel/ directory.
-# assumes CWD is a git repository, else pass target directory as first argument.
-#
+CLR_ESC=$'\033['
+NOCOLOR=$'\033[0m'
 
-# utility
-#########
+# All these variables has a with the same name, but in lower case.
+RED=${CLR_ESC}$'31m'              # set red foreground
+GREEN=${CLR_ESC}$'32m'            # set green foreground
+YELLOW=${CLR_ESC}$'33m'           # set brown foreground
+BLUE=${CLR_ESC}$'34m'             # set blue foreground
+PURPLE=${CLR_ESC}$'35m'           # set magenta foreground
+CYAN=${CLR_ESC}$'36m'             # set cyan foreground
+WHITE=${CLR_ESC}$'37m'            # set white foreground
+GRAY=${CLR_ESC}$'90m'             # set gray foreground
 
-error(){
-  printf "\033[31m%s\n\033[0m" "$@" >&2
+# for spitting out colorized text
+echoColorText (){
+  echo ${CLR_ESC}$3"$2$1"${NOCOLOR}
+}
+
+# Error Message
+errorMsg (){
+  echoColorText "$1" 'ERROR: ' $RED
   exit 1
 }
 
-# sed_inplace : in place file substitution
-############################################
-#
-# usage: sed_inplace "file" "sed substitution"
-#    ex: sed_inplace "/tmp/file" "s/CLIENT_CODE/BA/g"
-#
+type git >/dev/null 2>&1 || errorMsg "Please install git before continuing..."
 
-sed_inplace(){
-  # linux
-  local SED_CMD="sed"
+BasePath=$(git rev-parse --show-toplevel)
+Repo="git@github.com:TrevorMW/bash_utils.git"
+branch="master"
 
-  if [[ $OSTYPE == darwin* ]]; then
-    if $(type gsed >/dev/null 2>&1); then
-      local SED_CMD="gsed"
-    elif $(type /usr/local/bin/sed >/dev/null 2>&1); then
-      local SED_CMD="/usr/local/bin/sed"
-    else
-      sed -i '' -E "$2" $1
-      return
-    fi
-  fi
-
-  $SED_CMD -r -i "$2" $1
+linkBin(){
+  ln -s "$BasePath/bash_utils/bin" "$BasePath/bin"
 }
 
+downloadUtils(){
 
-# line_in_file : ensure a line exists in a file
-###############################################
-#
-# usage: line_in_file "file" "match" "line"
-#    ex: line_in_file "varsfile" "^VARNAME=.*$" "VARNAME=value"
-#
-
-line_in_file(){
-  local delim=${4:-"|"}
-  grep -q "$2" $1 2>/dev/null && sed_inplace $1 "s$delim$2$delim$3$delim" || echo $3 >> $1
+  git clone $repo $branch
 }
 
+attach(){
 
-type git >/dev/null 2>&1 || errorMsg "please install git before continuing..."
+  downloadUtils
 
-# globals
-#########
-type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
-  CWD="$(dirname "$(readlink -f "$0")")"
+  linkBin
+}
 
-[ -z "$1" ] || CWD=$1
-cd $CWD || error "cannot enter $CWD"
-
-REPO_ROOT=$(git rev-parse --show-toplevel) || error \
-    "$CWD does not belong to a git repository"
-
-WORKING_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-REPO_HEAD="$(git rev-parse --short HEAD)"
-
-# skelvars
-##########
-
-REMOTE=${SKEL_REMOTE:-"git@github.com:TrevorMW/bash_utils.git"}
-BRANCH=${SKEL_BRANCH:-"production"}
-
-# runtime
-#########
-
-git ls-remote --exit-code -h $SKEL_REMOTE $SKEL_REMOTE_REF >/dev/null || error \
-  "SKEL_REMOTE_REF: $SKEL_REMOTE_REF missing from SKEL_REMOTE: $SKEL_REMOTE"
-
-[ "$WORKING_BRANCH" = "$SKEL_BRANCH" ] || error \
-  "You must attach skel from the $SKEL_BRANCH (currently on $WORKING_BRANCH)" \
-  "please checkout $SKEL_BRANCH and try again, -or-" \
-  "  alternatively set (export SKEL_BRANCH=branchname) the desired branch"
-
-cd $REPO_ROOT
-
-[ -z "$(git status -uno --porcelain --)" ] || error \
-  "Uncommitted changes detected" "commit or stash before continuing..."
-
-[ -d "$REPO_ROOT/$SKEL_DIR" ] && error \
-  "$REPO_ROOT/$SKEL_DIR exists!" "backup+remove it before continuing"
-
-printf "\n  registering skelvars to $SKELVARS ...\n"
-line_in_file "$SKELVARS" "^SKEL_REMOTE=.*$" "SKEL_REMOTE=$SKEL_REMOTE"
-line_in_file "$SKELVARS" "^SKEL_RELEASE=.*$" "SKEL_RELEASE=$SKEL_RELEASE"
-line_in_file "$SKELVARS" "^SKEL_REMOTE_REF=.*$" "SKEL_REMOTE_REF=$SKEL_REMOTE_REF"
-line_in_file "$SKELVARS" "^SKEL_DIR=.*$" "SKEL_DIR=$SKEL_DIR"
-line_in_file "$SKELVARS" "^SKEL_BRANCH=.*$" "SKEL_BRANCH=$SKEL_BRANCH"
-git add $SKELVARS && git commit -m "registering skelvars"
-
-printf "\n  merging upstream-skel into $SKEL_DIR/...\n"
-git subtree add --prefix=$SKEL_DIR/ --squash -m "attaching skel" \
-  $SKEL_REMOTE $SKEL_REMOTE_REF || error "error attaching skel to project"
-
-printf "\n  ************************************ \n"
-printf "\n            skel attached\n"
-printf "\n  git log $REPO_HEAD..HEAD   for a list of commits"
-printf "\n  git diff --name-only $REPO_HEAD..HEAD   for a list of file changes"
-printf "\n  git reset --hard $REPO_HEAD   to undo skel attachment"
-printf "\n  git push origin HEAD   when you're ready to push skel attachment\n"
-printf "\n  **don't forget to initialize the skel**: \n"
-printf "\n    skel/bin/skel --help \n"
-printf "\n  to initialize without blueacornui/pulling in green-pistachio: \n"
-printf "\n    skel/bin/skel init --force --gp-skip --repo-remote $(git config --get remote.origin.url)\n"
-printf "\n  also remember to 'bin/skel push' after making an environment."
-printf "\n               thanks!\n\n"
+attach
