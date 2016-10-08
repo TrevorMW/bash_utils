@@ -65,11 +65,9 @@ downloadUtils(){
 
 attach(){
 
-  #downloadUtils
+  downloadUtils
 
-  #linkBin
-
-  echo
+  linkBin
 }
 
 attach
