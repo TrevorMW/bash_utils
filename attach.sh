@@ -24,35 +24,58 @@ errorMsg (){
   exit 1
 }
 
+# Generic separator, to make bash output more dilimited
+separator (){
+  local delim="$1"
+
+  if [ -z $1 ]; then
+    delim="-"
+  fi;
+
+  echoColorText $( printf "%*s" "${COLUMNS:-$(tput cols)}" " " | tr ' ' "$delim" ) $GRAY
+}
+
+################################################################################################
+################################ Runtime #######################################################
+################################################################################################
+
 type git >/dev/null 2>&1 || errorMsg "Please install git before continuing..."
 
-echoColorText "Attaching $YELLOW\"bash_utils\"$BLUE toolkit" "Task: " $BLUE
+type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
+  CWD="$(dirname "$(readlink -f "$0")")"
 
 BasePath=$(git rev-parse --show-toplevel)
 repo="git@github.com:TrevorMW/bash_utils.git"
 branch="master"
 
+echoColorText "Attaching $YELLOW\"bash_utils\"$BLUE toolkit" "Task: " $BLUE
+
+echo $CWD
 echo $BasePath
 echo $repo
 echo $branch
 
 linkBin(){
   echoColorText "Creating symlink to access $CYAN\"bash_utils\"$YELLOW bin folder." " - " $YELLOW
+  separator
   echo
   ln -s "$BasePath/bash_utils/bin" "$BasePath/bin"
 }
 
 downloadUtils(){
   echoColorText "Cloning $CYAN\"bash_utils\"$YELLOW repository." " - " $YELLOW
+  separator
   echo
   git clone -b $branch $repo
 }
 
 attach(){
 
-  downloadUtils
+  #downloadUtils
 
-  linkBin
+  #linkBin
+
+  echo
 }
 
 attach
