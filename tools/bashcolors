@@ -18,16 +18,18 @@ echoColorText (){
   echo ${CLR_ESC}$3"$2$1"${NOCOLOR}
 }
 
-# Success Message
-successMsg (){
-  echoColorText "$1" 'SUCCESS: ' $GREEN
-}
-
 # Error Message
 errorMsg (){
   echoColorText "$1" 'ERROR: ' $RED
   exit 1
 }
+
+# Success Message
+successMsg (){
+  echoColorText "$1" 'SUCCESS: ' $GREEN
+}
+
+
 
 # Info Message
 infoMsg (){
