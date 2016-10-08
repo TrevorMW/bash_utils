@@ -6,7 +6,7 @@ type greadlink >/dev/null 2>&1 && CWD="$( dirname "$( greadlink -f "$0" )" )" ||
 
 themePath=$(pwd)
 
-. $themePath/tools/functions
+. $themePath/bash_utils/tools/functions
 
 type git >/dev/null 2>&1 || errorMsg "Please install git before continuing..."
 
