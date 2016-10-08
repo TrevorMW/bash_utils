@@ -1,10 +1,9 @@
 #! /usr/bin/env bash
 
-type greadlink >/dev/null 2>&1 && CWD="$( dirname "$( greadlink -f "$0" )" )" || \
-  CWD="$( dirname "$( readlink -f "$0" )" )"
+BasePath=$(pwd)
 
-. $CWD/tools/bashcolors
-. $CWD/tools/help
+. $BasePath/tools/bashcolors
+. $BasePath/tools/help
 
 prompt_confirm() {
   while true; do
