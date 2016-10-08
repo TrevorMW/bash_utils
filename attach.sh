@@ -53,7 +53,7 @@ linkBin(){
   echoColorText "Creating symlink to access $CYAN\"bash_utils\"$YELLOW bin folder." " - " $YELLOW
   separator
   echo
-  ln -s "$CWD/bash_utils/bin" bin
+  ln -s ./bash_utils/bin bin
 }
 
 downloadUtils(){
@@ -63,10 +63,16 @@ downloadUtils(){
   git clone -b $branch $repo
 }
 
+removeExtraGit(){
+  echoColorText "Removing .git folder from $CYAN\"bash_utils\"$YELLOW" " - " $YELLOW
+  rm -rf "./bash_utils/.git"
+}
+
 attach(){
 
   downloadUtils
   linkBin
+  removeExtraGit
 }
 
 attach
