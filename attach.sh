@@ -36,7 +36,7 @@ linkBin(){
 
 downloadUtils(){
 
-  git clone $repo $branch
+  git clone -b $branch $repo 
 }
 
 attach(){
