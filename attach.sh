@@ -44,22 +44,16 @@ type git >/dev/null 2>&1 || errorMsg "Please install git before continuing..."
 type greadlink >/dev/null 2>&1 && CWD="$(dirname "$(greadlink -f "$0")")" || \
   CWD="$(dirname "$(readlink -f "$0")")"
 
-BasePath=$(git rev-parse --show-toplevel)
 repo="git@github.com:TrevorMW/bash_utils.git"
 branch="master"
 
 echoColorText "Attaching $YELLOW\"bash_utils\"$BLUE toolkit" "Task: " $BLUE
 
-echo $CWD
-echo $BasePath
-echo $repo
-echo $branch
-
 linkBin(){
   echoColorText "Creating symlink to access $CYAN\"bash_utils\"$YELLOW bin folder." " - " $YELLOW
   separator
   echo
-  ln -s "$BasePath/bash_utils/bin" "$BasePath/bin"
+  ln -s "$CWD/bash_utils/bin" "$CWD/bin"
 }
 
 downloadUtils(){
