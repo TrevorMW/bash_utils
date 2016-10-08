@@ -29,8 +29,6 @@ successMsg (){
   echoColorText "$1" 'SUCCESS: ' $GREEN
 }
 
-
-
 # Info Message
 infoMsg (){
   echoColorText "$1" 'INFO: ' $YELLOW
