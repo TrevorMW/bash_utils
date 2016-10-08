@@ -48,32 +48,39 @@ repo="git@github.com:TrevorMW/bash_utils.git"
 branch="master"
 
 echoColorText "Attaching $YELLOW\"bash_utils\"$BLUE toolkit" "Task: " $BLUE
+separator
 
 linkBin(){
   echoColorText "Creating symlink to access $CYAN\"bash_utils\"$YELLOW bin folder." " - " $YELLOW
-  separator
   echo
+  separator
   ln -s ./bash_utils/bin bin
 }
 
 downloadUtils(){
-  echoColorText "Cloning $CYAN\"bash_utils\"$YELLOW repository." " - " $YELLOW
-  separator
   echo
+  echoColorText "Cloning $CYAN\"bash_utils\"$YELLOW repository." " - " $YELLOW
+  echo
+  separator
   git clone -b $branch $repo
 }
 
 removeExtraGit(){
+  echo
   echoColorText "Removing .git folder from $CYAN\"bash_utils\"$YELLOW" " - " $YELLOW
+  echo
+  separator
   rm -rf "./bash_utils/.git"
 }
 
 removeAttach(){
+  echo
+  echoColorText "Removing attach.sh" " - " $YELLOW
+  echo
   rm "./attach.sh"
 }
 
 attach(){
-
   downloadUtils
   linkBin
   removeExtraGit
