@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/usr/bin/env bash
 
 CLR_ESC=$'\033['
 NOCOLOR=$'\033[0m'
