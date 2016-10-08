@@ -64,9 +64,7 @@ downloadUtils(){
 }
 
 attach(){
-
   downloadUtils
-
   linkBin
 }
 
